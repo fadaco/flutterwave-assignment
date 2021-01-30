@@ -68,8 +68,10 @@ router.post('/validate-rule', (req, res) => {
              else if(!req.body.data[value[0]][value[1]]){
                 return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} is missing from the data.`, null))
 
-             } else if(typeof req.body.rule.condition_value !== typeof req.body.data[value[0]][value[1]]){
+             } else if((typeof req.body.rule.condition_value !== typeof req.body.data[value[0]][value[1]]) && req.body.rule.condition !== 'contains' ){
                 return res.status(400).send(JsonResponse("error", `${req.body.rule.field} should be ${checkType(typeof req.body.rule.condition_value)} ${typeof req.body.rule.condition_value}.`, null))
+    
+
              } else {
                  if(checkCondition(req.body.data[value[0]][value[1]], req.body.rule.condition, req.body.rule.condition_value)){
                     return res.status(200).send(JsonResponse("success", `field ${req.body.rule.field} successfully validated.`, ress("success", req.body.rule.field, req.body.data[value[0]][value[1]], req.body.rule.condition, req.body.rule.condition_value)))

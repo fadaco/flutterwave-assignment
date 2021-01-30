@@ -27,7 +27,7 @@ const vowel = ['a','e','i','o','u'];
         case 'gt':
             return field > condition;
         case 'contains':
-            return field.includes(contains);
+            return field.includes(condition);
         default:
             return false;
     }
