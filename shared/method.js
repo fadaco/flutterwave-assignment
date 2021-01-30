@@ -33,6 +33,7 @@ const vowel = ['a','e','i','o','u'];
     }
 }
 
+
 const ress = (status, name, value, condition, condition_value) => {
  return  {validation : {
       error : status === 'success' ? false : 'true',
