@@ -106,9 +106,9 @@ router.post('/validate-rule', (req, res) => {
                 return res.status(400).send(JsonResponse("error", `${req.body.rule.field} should be ${checkType(typeof req.body.rule.condition_value)} ${typeof req.body.rule.condition_value}.`, null))
              } else {
                  if(checkCondition(req.body.data[value[0]][value[1]], req.body.rule.condition, req.body.rule.condition_value)){
-                    return res.status(200).send(JsonResponse("success", `field ${req.body.rule.field} successfully validated.`, ress("success", req.body.rule.field, req.body.data[req.body.rule.field], req.body.rule.condition, req.body.rule.condition_value)))
+                    return res.status(200).send(JsonResponse("success", `field ${req.body.rule.field} successfully validated.`, ress("success", req.body.rule.field, req.body.data[value[0]][value[1]], req.body.rule.condition, req.body.rule.condition_value)))
                  } else {
-                    return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} failed validation.`, ress("error", req.body.rule.field, req.body.data[req.body.rule.field], req.body.rule.condition, req.body.rule.condition_value)))
+                    return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} failed validation.`, ress("error", req.body.rule.field, req.body.data[value[0]][value[1]], req.body.rule.condition, req.body.rule.condition_value)))
 
                  }
              }
