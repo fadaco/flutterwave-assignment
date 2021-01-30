@@ -45,8 +45,10 @@ const data2 = {
               return field != condition;
           case 'gt':
               return field > condition;
-          default:
+          case 'contains':
               return field.includes(contains);
+          default:
+              return false;
       }
   }
 
@@ -68,8 +70,11 @@ router.get('/', async (req, res)=> {
 
 const sendValue = (req, res) => {
     try {
-        if(!req.body.data[req.body.rule.field]) {
-         return res.status(400).send(JsonResponse("error", `${req.body.rule.field} is required.`, null))
+        if (req.body.data[req.body.rule.field] === '' || req.body.data[req.body.rule.field] === null) {
+            return res.status(400).send(JsonResponse("error", `${req.body.rule.field} is required.`, null))
+        }
+       else if(!req.body.data[req.body.rule.field]) {
+        return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} is missing from the data.`, null))
         } else if(typeof req.body.rule.condition_value !== typeof req.body.data[req.body.rule.field]) {
             return res.status(400).send(JsonResponse("error", `${req.body.rule.field} should be ${checkType(typeof req.body.rule.condition_value)} ${typeof req.body.rule.condition_value}.`, null))
         } else {
@@ -78,10 +83,11 @@ const sendValue = (req, res) => {
             } else {
                 return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} failed validation.`, ress("error", req.body.rule.field, req.body.data[req.body.rule.field], req.body.rule.condition, req.body.rule.condition_value)))
             }
+            
         }
 
     } catch(err){
-       res.send(err);
+        return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} is missing from the data.`, null))
     }
 }
 
@@ -90,8 +96,12 @@ router.post('/validate-rule', (req, res) => {
     if(req.body.rule.field.includes('.')){
         let value = req.body.rule.field.split('.');
         if(typeof req.body.data[value[0]] == 'object') {
-             if(!req.body.data[value[0]][value[1]]){
+            if(req.body.data[value[0]][value[1]] === '' || req.body.data[value[0]][value[1]] === null) {
                 return res.status(400).send(JsonResponse("error", `${req.body.rule.field} is required.`, null))
+            }
+             else if(!req.body.data[value[0]][value[1]]){
+                return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} is missing from the data.`, null))
+
              } else if(typeof req.body.rule.condition_value !== typeof req.body.data[value[0]][value[1]]){
                 return res.status(400).send(JsonResponse("error", `${req.body.rule.field} should be ${checkType(typeof req.body.rule.condition_value)} ${typeof req.body.rule.condition_value}.`, null))
              } else {
