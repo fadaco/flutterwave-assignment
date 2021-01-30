@@ -41,7 +41,7 @@ const sendValue = (req, res) => {
         }
        else if(!req.body.data[req.body.rule.field]) {
         return res.status(400).send(JsonResponse("error", `field ${req.body.rule.field} is missing from the data.`, null))
-        } else if(typeof req.body.rule.condition_value !== typeof req.body.data[req.body.rule.field]) {
+        } else if((typeof req.body.rule.condition_value !== typeof req.body.data[req.body.rule.field]) && req.body.rule.condition !== 'contains') {
             return res.status(400).send(JsonResponse("error", `${req.body.rule.field} should be ${checkType(typeof req.body.rule.condition_value)} ${typeof req.body.rule.condition_value}.`, null))
         } else {
              if(checkCondition(req.body.data[req.body.rule.field], req.body.rule.condition, req.body.rule.condition_value)){
