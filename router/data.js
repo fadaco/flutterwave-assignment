@@ -25,8 +25,6 @@ const data2 = {
     }
   }
 
-  
-
  
   
 
@@ -88,7 +86,6 @@ router.post('/validate-rule', (req, res) => {
     } else {
         sendValue(req, res)
     }
-   
    
 });
 
