@@ -58,6 +58,7 @@ const sendValue = (req, res) => {
 }
 
 
+
 router.post('/validate-rule', (req, res) => {
     if(req.body.rule.field.includes('.')){
         let value = req.body.rule.field.split('.');
